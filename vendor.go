@@ -73,10 +73,7 @@ type PackageError struct {
 	Err         string   // the error itself
 }
 
-func main() {
-	flag.Usage = func() {
-		io.WriteString(os.Stdout, `
-Vendor is a tool for managing Go dependencies.
+const usage = `Vendor is a tool for managing Go dependencies.
 
 Usage:
 
@@ -105,7 +102,12 @@ Reverting changes made by vendor are done with a scm like Git.
 
 Vendor will append all packages vendored and their Git SHAs to ./vendor-log for
 your auditing and version tracking purposes.
-`)
+`
+
+func main() {
+	flag.Usage = func() {
+		io.WriteString(os.Stdout, usage)
+		os.Exit(0)
 	}
 
 	log.SetFlags(0)
