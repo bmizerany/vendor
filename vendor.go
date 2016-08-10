@@ -74,6 +74,40 @@ type PackageError struct {
 }
 
 func main() {
+	flag.Usage = func() {
+		io.WriteString(os.Stdout, `
+Vendor is a tool for managing Go dependencies.
+
+Usage:
+
+	vendor fileOrpkg...
+
+Examples:
+
+	vendor .
+	vendor ./cmd/acommand
+	vendor main.go
+	vendor github.com/lib/pq
+
+Running vendor with a package name will install the package and its
+dependencies into ./vendor if and only if those packages are not local to the
+current directory.
+
+Running vendor on a file will vendor the file if it is not local along with the
+files non-local dependencies.
+
+Vendor will skip a file or packages vendored dependencies and print them to
+stdout for you to decide what to do about them. Usually running vendor again
+with their package name minus the github.com/want/thing/vendor/ prefix is
+ideal.
+
+Reverting changes made by vendor are done with a scm like Git.
+
+Vendor will append all packages vendored and their Git SHAs to ./vendor-log for
+your auditing and version tracking purposes.
+`)
+	}
+
 	log.SetFlags(0)
 	log.SetPrefix("vendor: ")
 
